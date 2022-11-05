@@ -7,7 +7,7 @@ on:
   schedule:
     - cron: '5 1 * * *'
     - cron: '5 22 * * *'
-    - cron: '0 11 * * *'
+    - cron: '5 10 * * *'
     - cron: '5 6 * * *'
 
 jobs:
@@ -50,7 +50,7 @@ jobs:
       env:
         host: ${{ secrets.HOST }}
         token: ${{ secrets.TOKEN }}
-      if: github.event.schedule == '0 11 * * *'
+      if: github.event.schedule == '5 10 * * *'
       run: node eu-signin.js $host $token
 
     - name: eu-checkin
