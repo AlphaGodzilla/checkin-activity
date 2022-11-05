@@ -60,11 +60,43 @@ async function checkin(token, actId) {
         console.log(`3. checkin /api/act/check/check/in ==> ${res.status} | ${JSON.stringify(res.data)}`)
         return true;
     }catch(error) {
-        console.log(`3. checkin /api/act/check/check/in error ==> ${error.response.status} | ${JSON.stringify(error.response.data)}`)
+        console.error(`3. checkin /api/act/check/check/in error ==> ${error.response.status} | ${JSON.stringify(error.response.data)}`)
         return false;
     }
 } 
 // checkin(token, '1748527867893791719')
+
+async function signin(token, actId) {
+    let res
+    try {
+        res = await axios.post(host + '/api/act/check/sign/in', { actAreaId: actId }, {
+            headers: { Token: token }
+        })
+        console.log(`3. singin /api/act/check/sign/in ===> ${res.status} | ${JSON.stringify(res.data)}`)
+        return true;
+    }catch(error) {
+        console.error(`3. singin /api/act/check/sign/in error ===> ${res.response.status} | ${JSON.stringify(res.response.data)}`)
+        return false;
+    }
+}
+
+async function scheduleForSignIn(token, area) {
+    let next = true;
+    next = await ping();
+    if (!next) {
+        return;
+    }
+    let {onAct: { id: actId }} = await getActivityInfo(token, area)
+    next = !!actId
+    if (!next) {
+        return;
+    }
+    next = await signin(token, actId)
+    if (!next) {
+        return
+    }
+    console.log('signin success')
+}
 
 
 async function scheduleForCheckIn(token, area) {
@@ -90,5 +122,6 @@ async function scheduleForCheckIn(token, area) {
 }
 
 module.exports = {
-    scheduleForCheckIn
+    scheduleForCheckIn,
+    scheduleForSignIn
 }
