@@ -1,61 +1,61 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+# # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
-name: Checkin & Signin Trigger
+# name: Checkin & Signin Trigger
 
-on:
-  schedule:
-    - cron: '5 1 * * *'
-    - cron: '5 22 * * *'
-    - cron: '5 10 * * *'
-    - cron: '5 6 * * *'
+# on:
+#   schedule:
+#     - cron: '5 1 * * *'
+#     - cron: '5 22 * * *'
+#     - cron: '5 10 * * *'
+#     - cron: '5 6 * * *'
 
-jobs:
-  build:
+# jobs:
+#   build:
 
-    runs-on: ubuntu-latest
+#     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [14.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+#     strategy:
+#       matrix:
+#         node-version: [14.x]
+#         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
-    steps:
-    - uses: actions/checkout@v3
+#     steps:
+#     - uses: actions/checkout@v3
     
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
+#     - name: Use Node.js ${{ matrix.node-version }}
+#       uses: actions/setup-node@v3
+#       with:
+#         node-version: ${{ matrix.node-version }}
+#         cache: 'npm'
     
-    - name: install
-      run: npm install
+#     - name: install
+#       run: npm install
     
-    - name: asia-signin
-      env:
-        host: ${{ secrets.HOST }}
-        token: ${{ secrets.TOKEN }}
-      if: github.event.schedule == '5 1 * * *'
-      run: node asia-signin.js $host $token
+#     - name: asia-signin
+#       env:
+#         host: ${{ secrets.HOST }}
+#         token: ${{ secrets.TOKEN }}
+#       if: github.event.schedule == '5 1 * * *'
+#       run: node asia-signin.js $host $token
     
-    - name: asia-checkin
-      env:
-        host: ${{ secrets.HOST }}
-        token: ${{ secrets.TOKEN }}
-      if: github.event.schedule == '5 22 * * *'
-      run: node asia-checkin.js $host $token
+#     - name: asia-checkin
+#       env:
+#         host: ${{ secrets.HOST }}
+#         token: ${{ secrets.TOKEN }}
+#       if: github.event.schedule == '5 22 * * *'
+#       run: node asia-checkin.js $host $token
 
-    - name: eu-signin
-      env:
-        host: ${{ secrets.HOST }}
-        token: ${{ secrets.TOKEN }}
-      if: github.event.schedule == '5 10 * * *'
-      run: node eu-signin.js $host $token
+#     - name: eu-signin
+#       env:
+#         host: ${{ secrets.HOST }}
+#         token: ${{ secrets.TOKEN }}
+#       if: github.event.schedule == '5 10 * * *'
+#       run: node eu-signin.js $host $token
 
-    - name: eu-checkin
-      env:
-        host: ${{ secrets.HOST }}
-        token: ${{ secrets.TOKEN }}
-      if: github.event.schedule == '5 6 * * *'
-      run: node eu-checkin.js $host $token
+#     - name: eu-checkin
+#       env:
+#         host: ${{ secrets.HOST }}
+#         token: ${{ secrets.TOKEN }}
+#       if: github.event.schedule == '5 6 * * *'
+#       run: node eu-checkin.js $host $token
